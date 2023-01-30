@@ -24,7 +24,6 @@ fn io_error_to_term<'a>(env: Env<'a>, err: &CaError) -> Term<'a> {
 
 #[nif(schedule = "DirtyCpu")]
 fn worksheets<'a>(env: Env<'a>, filename: String) -> Term<'a> {
-
     match open_workbook_auto(&filename) {
         Err(ref error) => return io_error_to_term(env, error),
         Ok(ref inner) => (atoms::ok(), inner.sheet_names().to_owned()).encode(env),
@@ -37,7 +36,6 @@ fn parse<'a>(env: Env<'a>, filename: String, sheetname: String) -> Term<'a> {
         Err(ref error) => return io_error_to_term(env, error),
         Ok(inner) => inner,
     };
-
 
     if let Some(Ok(range)) = excel.worksheet_range(&sheetname) {
         let rows: Vec<Vec<String>> = range
