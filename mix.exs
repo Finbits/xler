@@ -36,9 +36,6 @@ defmodule Xler.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps() do
     [
-      # TODO: upgrade rustler
-      # TODO: fix deprecations
-      # TODO: compile everything with the latest versions of elixir and rust
       {:rustler, "~> 0.27.0"},
       {:rustler_precompiled, "~> 0.6.0"},
       {:ex_doc, "~> 0.29", only: :dev, runtime: false}

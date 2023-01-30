@@ -34,22 +34,22 @@ defmodule Xler do
     |> convert_data_types(opts)
   end
 
+  defp convert_data_types({:error, reason}, _opts), do: {:error, reason}
+
   defp convert_data_types({:ok, data}, opts) do
     format_opts = Keyword.get(opts, :format, %{})
 
     data
     |> Enum.with_index()
     |> Enum.map(fn
-      {row, 0} ->
-        # TODO: customizar header rows
-        if Map.get(format_opts, :skip_headers, true) == true do
+      {row, index} ->
+        skip_rows = Map.get(format_opts, :skip_rows, [])
+
+        if Enum.member?(skip_rows, index) do
           row
         else
           format_cells(row, Map.get(format_opts, :columns, []))
         end
-
-      {row, _index} ->
-        format_cells(row, Map.get(format_opts, :columns, []))
     end)
     |> then(&{:ok, &1})
   end
@@ -112,6 +112,10 @@ defmodule Xler do
       %NaiveDateTime{} = datetime -> NaiveDateTime.to_time(datetime)
       other -> other
     end
+  end
+
+  defp format_cell(cell, {mod, fun}) do
+    apply(mod, fun, [cell])
   end
 
   defp format_cell(cell, _), do: cell
