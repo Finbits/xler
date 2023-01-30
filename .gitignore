@@ -26,3 +26,6 @@ xler-*.tar
 /.elixir_ls
 
 *.xls
+
+# Temporary files, for example, from tests.
+/tmp/
