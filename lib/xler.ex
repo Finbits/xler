@@ -66,6 +66,8 @@ defmodule Xler do
     end)
   end
 
+  defp format_cell("", _type), do: nil
+
   defp format_cell(cell, :integer) do
     case Integer.parse(cell) do
       {value, _rest} -> value
