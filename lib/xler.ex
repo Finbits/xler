@@ -39,19 +39,21 @@ defmodule Xler do
   defp convert_data_types({:ok, data}, opts) do
     format_opts = Keyword.get(opts, :format, %{})
 
-    data
-    |> Enum.with_index()
-    |> Enum.map(fn
-      {row, index} ->
-        skip_rows = Map.get(format_opts, :skip_rows, [])
+    formatted_data =
+      data
+      |> Enum.with_index()
+      |> Enum.map(fn
+        {row, index} ->
+          skip_rows = Map.get(format_opts, :skip_rows, [])
 
-        if Enum.member?(skip_rows, index) do
-          row
-        else
-          format_cells(row, Map.get(format_opts, :columns, []))
-        end
-    end)
-    |> then(&{:ok, &1})
+          if Enum.member?(skip_rows, index) do
+            row
+          else
+            format_cells(row, Map.get(format_opts, :columns, []))
+          end
+      end)
+
+    {:ok, formatted_data}
   end
 
   defp format_cells(row, columns_opts) do
