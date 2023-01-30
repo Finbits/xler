@@ -7,7 +7,7 @@ defmodule Xler.MixProject do
     [
       app: :xler,
       version: @version,
-      elixir: "~> 1.8",
+      elixir: "~> 1.11",
       start_permanent: Mix.env() == :prod,
       description: description(),
       package: package(),
