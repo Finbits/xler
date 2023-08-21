@@ -87,6 +87,38 @@ defmodule XlerTest do
              ]
     end
 
+    test "date in text" do
+      fixture = Path.join(__DIR__, "/data/date-in-text.xlsx")
+
+      assert {:ok, data} =
+               Xler.parse(fixture, "Página1",
+                 format: %{
+                   skip_rows: [],
+                   columns: [
+                     %{column: 0, data_type: :date}
+                   ]
+                 }
+               )
+
+      assert data == [["Data"], [~D[2023-08-21]]]
+    end
+
+    test "datetime in text" do
+      fixture = Path.join(__DIR__, "/data/date-in-text.xlsx")
+
+      assert {:ok, data} =
+               Xler.parse(fixture, "Página1",
+                 format: %{
+                   skip_rows: [],
+                   columns: [
+                     %{column: 0, data_type: :datetime}
+                   ]
+                 }
+               )
+
+      assert data == [["Data"], [~N[2023-08-21 00:00:00]]]
+    end
+
     def custom_formatter(value) do
       "#{value}customformatter"
     end

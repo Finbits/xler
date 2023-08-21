@@ -38,6 +38,7 @@ defmodule Xler.MixProject do
     [
       {:rustler, "~> 0.27.0"},
       {:rustler_precompiled, "~> 0.6.0"},
+      {:datix, "~> 0.3.1"},
       {:ex_doc, "~> 0.29", only: :dev, runtime: false}
     ]
   end

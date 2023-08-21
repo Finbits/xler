@@ -92,15 +92,25 @@ defmodule Xler do
 
   @day_in_seconds 86400
   defp format_cell(cell, :datetime) do
-    case Float.parse(cell) do
-      {time, _rest} ->
-        NaiveDateTime.add(
-          ~N[1900-01-01 00:00:00],
-          round(time * @day_in_seconds) - 2 * @day_in_seconds
-        )
+    if Regex.match?(~r/^\d+\.\d+$/, cell) or Regex.match?(~r/^\d+$/, cell) do
+      case Float.parse(cell) do
+        {time, _rest} ->
+          NaiveDateTime.add(
+            ~N[1900-01-01 00:00:00],
+            round(time * @day_in_seconds) - 2 * @day_in_seconds
+          )
 
-      :error ->
-        cell
+        :error ->
+          cell
+      end
+    else
+      case Datix.Date.parse(cell, "%d/%m/%Y") do
+        {:ok, date} ->
+          NaiveDateTime.new!(date, ~T[00:00:00])
+
+        _ ->
+          cell
+      end
     end
   end
 
